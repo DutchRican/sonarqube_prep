@@ -1,0 +1,23 @@
+{
+  "name": "sonarqube_prep",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "bin": {
+    "sq_prep": "./cli/index.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/prompts": "^2.4.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "ora": "^9.0.0",
+    "prompts": "^2.4.2"
+  }
+}
