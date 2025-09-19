@@ -46,7 +46,8 @@ export const getDefaultBranch = () => {
             const head = lines.find((item) => item.includes('HEAD branch'));
             if (!head)
                 return rej('HEAD branch was not found!');
-            const branchName = head.split(':')[-1];
+            // safe bet to force this since we know head is not undefined.
+            const branchName = head.split(':').at(-1);
             return res(branchName);
         });
     });
@@ -82,4 +83,12 @@ export const initialSetup = async () => {
     const envVars = { SONAR_HOST_URL: url, SONAR_TOKEN: token || undefined };
     await fs.writeFile(configLocation(), JSON.stringify(envVars), { encoding: 'utf-8' });
     return envVars;
+};
+export const buildBadges = (selectedBadges, { project, sqUrl, token }) => {
+    const badges = selectedBadges.map((entry) => {
+        var badgeUrl = `${sqUrl}/api/project_badges/measure?project=${project}&metric=${entry.val}&token=${token}`;
+        var dashUrl = `${sqUrl}/dashboard?id=${project}`;
+        return `[![${entry.title}](${badgeUrl})](${dashUrl})`;
+    });
+    return badges;
 };

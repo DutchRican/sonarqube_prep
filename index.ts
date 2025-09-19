@@ -1,4 +1,5 @@
 import ora, { type Ora } from 'ora';
+import { badgeOptions } from './lib/constants';
 import { FileManager } from './lib/logic/fileManager';
 import { getResponses } from './lib/logic/responses';
 import { SQManager } from './lib/logic/sqManager';
@@ -28,10 +29,12 @@ try {
 	const prefetchedProjects = await sqManager.getProjectList().finally(() => spinner?.succeed());
 	const responses = await getResponses(prefetchedProjects, defaultBranch, sqManager);
 	const fm = new FileManager();
-	console.log(responses)
 	if (responses.createYML) { await fm.createWorkflowYml(responses.defBranch); } else {
 		console.log(`\nHere is a Sonar job snippet you might want to use.\nThis can be added to a GitHub Actions workflow file:\n\n${jobStep}`)
 	}
+	await fm.createPropertiesFile(responses.projectKey);
+	await fm.updateReadme(responses.badgesSelected.map((index: number) => badgeOptions.at(index)), { project: responses.projectKey, sqUrl: SONAR_HOST_URL, token: responses.sq_token });
+
 } catch (err) {
 	console.error(err);
 }

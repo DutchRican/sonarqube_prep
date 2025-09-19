@@ -1,14 +1,18 @@
 import ora, {} from 'ora';
+import { badgeOptions } from './lib/constants';
 import { FileManager } from './lib/logic/fileManager';
 import { getResponses } from './lib/logic/responses';
 import { SQManager } from './lib/logic/sqManager';
 import { checkFirstTimeRunning, checkIfThisIsAGitRepo, getDefaultBranch, getEnvVars } from './lib/logic/utils';
+import { jobStep } from './lib/workflow';
 await checkIfThisIsAGitRepo().catch((err) => {
     console.error(err);
     process.exit(1);
 });
+let defaultBranch;
 try {
-    await getDefaultBranch();
+    defaultBranch = await getDefaultBranch();
+    console.log(defaultBranch);
 }
 catch (err) {
     console.error(err);
@@ -23,11 +27,16 @@ try {
         spinner = ora({ text: 'Fetching Projects', spinner: 'bouncingBall', color: 'blue' }).start();
     }
     const prefetchedProjects = await sqManager.getProjectList().finally(() => spinner?.succeed());
-    const responses = await getResponses(prefetchedProjects, sqManager);
+    const responses = await getResponses(prefetchedProjects, defaultBranch, sqManager);
     const fm = new FileManager();
-    console.log(responses);
-    if (responses.createYML)
-        await fm.createWorkflowYml("develop");
+    if (responses.createYML) {
+        await fm.createWorkflowYml(responses.defBranch);
+    }
+    else {
+        console.log(`\nHere is a Sonar job snippet you might want to use.\nThis can be added to a GitHub Actions workflow file:\n\n${jobStep}`);
+    }
+    await fm.createPropertiesFile(responses.projectKey);
+    await fm.updateReadme(responses.badgesSelected.map((index) => badgeOptions.at(index)), { project: responses.projectKey, sqUrl: SONAR_HOST_URL, token: responses.sq_token });
 }
 catch (err) {
     console.error(err);

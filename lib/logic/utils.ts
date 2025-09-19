@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import fs from 'fs/promises';
 import os from 'os';
 import prompts from 'prompts';
+import type { badgeOptions } from '../constants';
 
 export const getHomeDir = () => {
 	return os.homedir();
@@ -89,4 +90,19 @@ export const initialSetup = async () => {
 	const envVars = { SONAR_HOST_URL: url, SONAR_TOKEN: token || undefined };
 	await fs.writeFile(configLocation(), JSON.stringify(envVars), { encoding: 'utf-8' });
 	return envVars;
+}
+
+export type badgeBuildTypes = {
+	project: string;
+	sqUrl: string;
+	token: string;
+}
+
+export const buildBadges = (selectedBadges: typeof badgeOptions, { project, sqUrl, token }: badgeBuildTypes) => {
+	const badges = selectedBadges.map((entry) => {
+		var badgeUrl = `${sqUrl}/api/project_badges/measure?project=${project}&metric=${entry.val}&token=${token}`;
+		var dashUrl = `${sqUrl}/dashboard?id=${project}`;
+		return `[![${entry.title}](${badgeUrl})](${dashUrl})`;
+	});
+	return badges;
 }
