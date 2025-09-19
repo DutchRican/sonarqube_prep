@@ -1,9 +1,7 @@
+import { exec } from 'child_process';
 import fs from 'fs/promises';
 import os from 'os';
 import prompts from 'prompts';
-
-export const SONAR_HOST_URL = 'SONAR_HOST_URL';
-export const SONAR_TOKEN = 'SONAR_TOKEN';
 
 export const getHomeDir = () => {
 	return os.homedir();
@@ -27,6 +25,36 @@ export const getEnvVars = async (): Promise<{ SONAR_HOST_URL: string, SONAR_TOKE
 	} catch (err: any) {
 		throw Error(err.message);
 	}
+}
+
+export const checkIfThisIsAGitRepo = () => {
+	return new Promise<void>((res, rej) => {
+		exec('git status', (error) => {
+			if (error) {
+				return rej('Please make sure that you run this from a git repo');
+			}
+			return res();
+		});
+	});
+}
+
+export const getDefaultBranch = (): Promise<string> => {
+	return new Promise<string>((res, rej) => {
+		return exec('git remote show origin', (error, stdout) => {
+			if (error) {
+				if (error.code === 128) {
+					return rej('Unable to get origin repo information. \nMake sure you have access to the remote, and that it exists.')
+				}
+				return rej(error.message);
+			}
+			const lines = stdout.toString().split("\n");
+			const head = lines.find((item) => item.includes('HEAD branch'));
+			if (!head) return rej('HEAD branch was not found!');
+			// safe bet to force this since we know head is not undefined.
+			const branchName = head.split(':').at(-1)!;
+			return res(branchName);
+		});
+	});
 }
 
 export const initialSetup = async () => {

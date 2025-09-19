@@ -1,8 +1,7 @@
+import { exec } from 'child_process';
 import fs from 'fs/promises';
 import os from 'os';
 import prompts from 'prompts';
-export const SONAR_HOST_URL = 'SONAR_HOST_URL';
-export const SONAR_TOKEN = 'SONAR_TOKEN';
 export const getHomeDir = () => {
     return os.homedir();
 };
@@ -11,7 +10,6 @@ export const configLocation = () => {
 };
 export const checkFirstTimeRunning = async () => {
     const exists = await fs.exists(configLocation());
-    console.log(exists, configLocation());
     if (!exists) {
         await initialSetup();
     }
@@ -24,6 +22,34 @@ export const getEnvVars = async () => {
     catch (err) {
         throw Error(err.message);
     }
+};
+export const checkIfThisIsAGitRepo = () => {
+    return new Promise((res, rej) => {
+        exec('git status', (error) => {
+            if (error) {
+                return rej('Please make sure that you run this from a git repo');
+            }
+            return res();
+        });
+    });
+};
+export const getDefaultBranch = () => {
+    return new Promise((res, rej) => {
+        return exec('git remote show origin', (error, stdout) => {
+            if (error) {
+                if (error.code === 128) {
+                    return rej('Unable to get origin repo information. \nMake sure you have access to the remote, and that it exists.');
+                }
+                return rej(error.message);
+            }
+            const lines = stdout.toString().split("\n");
+            const head = lines.find((item) => item.includes('HEAD branch'));
+            if (!head)
+                return rej('HEAD branch was not found!');
+            const branchName = head.split(':')[-1];
+            return res(branchName);
+        });
+    });
 };
 export const initialSetup = async () => {
     // get inquirer answers

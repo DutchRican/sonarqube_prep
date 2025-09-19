@@ -1,38 +1,34 @@
-import prompts from 'prompts';
+import ora, {} from 'ora';
+import { FileManager } from './lib/logic/fileManager';
+import { getResponses } from './lib/logic/responses';
 import { SQManager } from './lib/logic/sqManager';
-import { checkFirstTimeRunning, getEnvVars } from './lib/logic/utils';
-async function getResponses(projects) {
-    const responses = await prompts([
-        {
-            type: 'text',
-            name: 'projectName',
-            message: 'What is the project name?',
-            initial: 'test'
-        },
-        {
-            type: 'multiselect',
-            name: 'badgesSelected',
-            message: 'What badges would you like to show in the ReadMe?',
-            choices: [{ title: 'Coverage' }, { title: 'Duplication' }]
-        },
-        {
-            type: 'autocomplete',
-            name: 'projectKey',
-            message: 'Enter or select a project key',
-            choices: projects.map((p) => ({ title: p.name, value: p.key })),
-            suggest: async (input, choices) => {
-                const matches = choices.filter((choice) => choice.title.toLocaleLowerCase().includes(input.toLocaleLowerCase()));
-                if (!matches.length && input.trim() !== '') {
-                    matches.push({ title: input, value: input });
-                }
-                return matches;
-            }
-        }
-    ]);
-    console.log(responses);
+import { checkFirstTimeRunning, checkIfThisIsAGitRepo, getDefaultBranch, getEnvVars } from './lib/logic/utils';
+await checkIfThisIsAGitRepo().catch((err) => {
+    console.error(err);
+    process.exit(1);
+});
+try {
+    await getDefaultBranch();
+}
+catch (err) {
+    console.error(err);
+    process.exit(2);
 }
 await checkFirstTimeRunning();
-const { SONAR_HOST_URL, SONAR_TOKEN } = await getEnvVars();
-const sqManager = new SQManager(SONAR_HOST_URL, SONAR_TOKEN);
-const prefetchedProjects = await sqManager.getProjectList();
-await getResponses(prefetchedProjects);
+try {
+    const { SONAR_HOST_URL, SONAR_TOKEN } = await getEnvVars();
+    const sqManager = new SQManager(SONAR_HOST_URL, SONAR_TOKEN);
+    let spinner;
+    if (SONAR_TOKEN) {
+        spinner = ora({ text: 'Fetching Projects', spinner: 'bouncingBall', color: 'blue' }).start();
+    }
+    const prefetchedProjects = await sqManager.getProjectList().finally(() => spinner?.succeed());
+    const responses = await getResponses(prefetchedProjects, sqManager);
+    const fm = new FileManager();
+    console.log(responses);
+    if (responses.createYML)
+        await fm.createWorkflowYml("develop");
+}
+catch (err) {
+    console.error(err);
+}

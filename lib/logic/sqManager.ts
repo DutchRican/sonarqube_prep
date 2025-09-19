@@ -20,9 +20,22 @@ export class SQManager {
 				"accept": "application/json"
 			}
 		});
-		if (!response.ok) throw response.status;
+		if (!response.ok) throw `Please double check your SonarQube URL and Token. \nThe request failed with: ${response.status}`;
 		const json = await response.json();
 		const projectList = projectFromJson(json['components'] || []);
 		return projectList;
+	}
+
+	async getTokenForBadges(projectKey: string) {
+		if (!this.auth || !projectKey) return '';
+		const response = await fetch(`${this.host}${this.TOKEN_URL}?project=${projectKey}`, {
+			headers: {
+				"Authorization": `Bearer ${this.auth}`,
+				"accept": "application/json"
+			}
+		});
+		if (!response.ok) throw 'Unable to fetch the project badges token';
+		const json = await response.json();
+		return json.token;
 	}
 }
