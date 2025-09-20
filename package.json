@@ -1,14 +1,35 @@
 {
   "name": "sonarqube_prep",
-  "module": "index.ts",
+  "version": "0.0.1",
+  "description": "A CLI tool to prepare SonarQube projects.",
+  "author": "Paul van Woensel",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DutchRican/sonarqube_prep.git"
+  },
+  "homepage": "https://github.com/DutchRican/sonarqube_prep#readme",
+  "bugs": {
+    "url": "https://github.com/DutchRican/sonarqube_prep/issues"
+  },
+  "main": "build/lib/index.js",
+  "types": "build/lib/index.d.ts",
   "type": "module",
-  "private": true,
   "scripts": {
     "build": "tsc"
   },
   "bin": {
     "sq_prep": "./cli/index.js"
   },
+  "files": [
+    "build",
+    "cli"
+  ],
+  "keywords": [
+    "sonarqube",
+    "cli",
+    "automation"
+  ],
   "devDependencies": {
     "@types/bun": "latest",
     "@types/prompts": "^2.4.9"

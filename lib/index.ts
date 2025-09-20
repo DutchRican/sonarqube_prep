@@ -13,7 +13,6 @@ await checkIfThisIsAGitRepo().catch((err) => {
 let defaultBranch: string;
 try {
 	defaultBranch = await getDefaultBranch();
-	console.log(defaultBranch)
 } catch (err) {
 	console.error(err);
 	process.exit(2);
