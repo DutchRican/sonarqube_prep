@@ -1,29 +1,12 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "nodenext",
     "lib": [
       "es2022"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "lib/*"
-      ],
-      "@lib/*": [
-        "lib/*"
-      ],
-      "@logic/*": [
-        "lib/logic/*"
-      ],
-      "@models/*": [
-        "lib/models/*"
-      ],
-      "@constants": [
-        "lib/constants"
-      ]
-    },
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "outDir": "build",

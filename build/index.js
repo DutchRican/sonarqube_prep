@@ -1,10 +1,10 @@
-import { badgeOptions } from '@constants';
-import { jobStep } from '@lib/workflow';
-import { FileManager } from '@logic/fileManager';
-import { getResponses } from '@logic/responses';
-import { SQManager } from '@logic/sqManager';
-import { checkFirstTimeRunning, checkIfThisIsAGitRepo, getDefaultBranch, getEnvVars } from '@logic/utils';
 import ora from 'ora';
+import { badgeOptions } from './constants.js';
+import { FileManager } from './logic/fileManager.js';
+import { getResponses } from './logic/responses.js';
+import { SQManager } from './logic/sqManager.js';
+import { checkFirstTimeRunning, checkIfThisIsAGitRepo, getDefaultBranch, getEnvVars } from './logic/utils.js';
+import { jobStep } from './workflow.js';
 await checkIfThisIsAGitRepo().catch((err) => {
     console.error(err);
     process.exit(1);

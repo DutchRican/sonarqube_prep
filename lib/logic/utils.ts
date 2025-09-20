@@ -1,8 +1,8 @@
-import type { badgeOptions } from '@constants';
 import { exec } from 'child_process';
 import fs from 'fs/promises';
 import os from 'os';
 import prompts from 'prompts';
+import type { badgeOptions } from '../constants.js';
 
 export const getHomeDir = () => {
 	return os.homedir();

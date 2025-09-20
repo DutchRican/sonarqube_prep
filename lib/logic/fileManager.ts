@@ -1,8 +1,8 @@
-import type { badgeOptions } from '@constants';
-import { wf } from '@lib/workflow';
-import { buildBadges, type badgeBuildTypes } from '@logic/utils';
 import fs from 'fs/promises';
 import path from 'path';
+import type { badgeOptions } from '../constants.js';
+import { wf } from '../workflow.js';
+import { buildBadges, type badgeBuildTypes } from './utils.js';
 
 export class FileManager {
 	currentWorkingDirectory: string;

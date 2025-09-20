@@ -1,4 +1,4 @@
-import { projectFromJson } from "@models/projectModel";
+import { projectFromJson } from "../models/projectModel.js";
 
 export class SQManager {
 	host: string;
