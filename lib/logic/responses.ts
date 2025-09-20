@@ -61,6 +61,6 @@ export async function getResponses(projects: Array<Project>, defaultBranch: stri
 			message: 'Would you like to create a separate github actions workflow file?',
 			initial: true
 		}
-	]);
+	], { onCancel: () => { console.log('Cancelled. Bye.'); process.exit(0); } });
 	return responses;
 }
