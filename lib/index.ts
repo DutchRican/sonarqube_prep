@@ -28,6 +28,8 @@ try {
 	}
 	const prefetchedProjects = await sqManager.getProjectList().finally(() => spinner?.succeed());
 	const responses = await getResponses(prefetchedProjects, defaultBranch, sqManager);
+
+	if (!Object.keys(responses).length) process.exit(0); // we got a cancel request
 	const fm = new FileManager();
 	if (responses.createYML) { await fm.createWorkflowYml(responses.defBranch); } else {
 		console.log(`\nHere is a Sonar job snippet you might want to use.\nThis can be added to a GitHub Actions workflow file:\n\n${jobStep}`)
