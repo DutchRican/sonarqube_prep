@@ -1,32 +1,48 @@
 {
   "compilerOptions": {
-    // Enable latest features
+    "target": "esnext",
+    "module": "esnext",
     "lib": [
-      "ESNext",
-      "DOM"
+      "es2022"
     ],
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
-    "verbatimModuleSyntax": true,
-    // Best practices
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "lib/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@logic/*": [
+        "lib/logic/*"
+      ],
+      "@models/*": [
+        "lib/models/*"
+      ],
+      "@constants": [
+        "lib/constants"
+      ]
+    },
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "outDir": "build",
+    "rootDir": "lib",
     "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false,
-    "noEmit": false,
-    "outDir": "./build"
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "sourceMap": true,
+    "types": [
+      "node"
+    ],
   },
+  "include": [
+    "lib/**/*.ts"
+  ],
   "exclude": [
-    "cli",
+    "node_modules",
     "build"
   ]
 }

@@ -1,8 +1,8 @@
+import type { badgeOptions } from '@constants';
+import { wf } from '@lib/workflow';
+import { buildBadges, type badgeBuildTypes } from '@logic/utils';
 import fs from 'fs/promises';
 import path from 'path';
-import type { badgeOptions } from '../constants';
-import { wf } from '../workflow';
-import { buildBadges, type badgeBuildTypes } from './utils';
 
 export class FileManager {
 	currentWorkingDirectory: string;
@@ -16,7 +16,7 @@ export class FileManager {
 			const ymlString = wf.replaceAll(/{{ branch }}/gi, branch);
 			const location = path.join(this.currentWorkingDirectory, '.github', 'workflows');
 			const dirName = path.dirname(location);
-			if (!(await fs.exists(dirName))) {
+			if (!(await fs.stat(dirName))) {
 				await fs.mkdir(location, { recursive: true });
 			}
 			await fs.writeFile(`${location}/sonarqube-build.yml`, ymlString, { encoding: 'utf-8' });

@@ -1,8 +1,8 @@
+import type { badgeOptions } from '@constants';
 import { exec } from 'child_process';
 import fs from 'fs/promises';
 import os from 'os';
 import prompts from 'prompts';
-import type { badgeOptions } from '../constants';
 
 export const getHomeDir = () => {
 	return os.homedir();
@@ -13,8 +13,11 @@ export const configLocation = () => {
 }
 
 export const checkFirstTimeRunning = async () => {
-	const exists = await fs.exists(configLocation());
-	if (!exists) {
+	try {
+		await fs.access(configLocation());
+		// file exists
+	} catch {
+		// file does not exist
 		await initialSetup();
 	}
 }

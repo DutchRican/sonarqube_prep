@@ -1,4 +1,4 @@
-import { projectFromJson } from "../models/projectModel";
+import { projectFromJson } from "@models/projectModel";
 
 export class SQManager {
 	host: string;
@@ -21,7 +21,7 @@ export class SQManager {
 			}
 		});
 		if (!response.ok) throw `Please double check your SonarQube URL and Token. \nThe request failed with: ${response.status}`;
-		const json = await response.json();
+		const json: any = await response.json();
 		const projectList = projectFromJson(json['components'] || []);
 		return projectList;
 	}
@@ -35,7 +35,7 @@ export class SQManager {
 			}
 		});
 		if (!response.ok) throw 'Unable to fetch the project badges token';
-		const json = await response.json();
+		const json: any = await response.json();
 		return json.token;
 	}
 }

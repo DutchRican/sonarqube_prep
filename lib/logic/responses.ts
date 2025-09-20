@@ -1,8 +1,8 @@
+import { badgeOptions } from "@constants";
+import type { SQManager } from "@logic/sqManager";
+import type { Project } from "@models/projectModel";
 import ora, { type Ora } from "ora";
 import prompts from "prompts";
-import { badgeOptions } from "../constants";
-import type { Project } from "../models/projectModel";
-import type { SQManager } from "./sqManager";
 
 export async function getResponses(projects: Array<Project>, defaultBranch: string, sqManager: SQManager) {
 	const responses = await prompts([

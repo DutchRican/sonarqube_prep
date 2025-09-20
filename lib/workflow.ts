@@ -1,4 +1,4 @@
-export const wf = `
+export const wf: string = `
 name: Build
 
 on:
@@ -31,7 +31,7 @@ jobs:
       #     SONAR_TOKEN: \${{ secrets.SONAR_TOKEN }}
 `;
 
-export const jobStep = `
+export const jobStep: string = `
  - name: SonarQube Analysis
         uses: sonarsource/sonarqube-scan-action@v5
         env:
