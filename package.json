@@ -1,6 +1,6 @@
 {
   "name": "sonarqube_prep",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A CLI tool to prepare SonarQube projects.",
   "author": "Paul van Woensel",
   "license": "ISC",
