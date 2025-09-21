@@ -19,6 +19,8 @@ Questions asked:
 - select the badges you want to add to the README.md 
 - Confirm if you would like to create a GHA for SonarQube
 
+<br />
+![Demo](./assets/demo.gif "Demo")
 ### Output
 
 As a result, the README.md file will have the badges selected added to the top of the file.

@@ -13,6 +13,7 @@ export class SQManager {
 
 	async getProjectList() {
 		const projects: Project[] = [];
+		const maxAttempts = 20;
 		if (!this.auth) return projects;
 		let currentPage = 1;
 		while (true) {
@@ -29,7 +30,7 @@ export class SQManager {
 
 			const projectList = projectFromJson(json['components'] || []);
 			projects.push(...projectList);
-			if (pageIndex * pageSize >= total) {
+			if (pageIndex * pageSize >= total || currentPage >= maxAttempts) {
 				break;
 			}
 			currentPage += 1;
