@@ -1,9 +1,9 @@
-import { projectFromJson } from "../models/projectModel.js";
+import { Project, projectFromJson } from "../models/projectModel.js";
 
 export class SQManager {
 	host: string;
 	auth: string;
-	PROJECT_URL = '/api/components/search_projects?ps=499';
+	PROJECT_URL = '/api/components/search_projects';
 	TOKEN_URL = '/api/project_badges/token';
 
 	constructor(host: string, auth: string) {
@@ -11,19 +11,31 @@ export class SQManager {
 		this.auth = auth;
 	}
 
-	// should really loop and get more if total items > pagesize
 	async getProjectList() {
-		if (!this.auth) return [];
-		const response = await fetch(`${this.host}${this.PROJECT_URL}`, {
-			headers: {
-				"Authorization": `Bearer ${this.auth}`,
-				"accept": "application/json"
+		const projects: Project[] = [];
+		if (!this.auth) return projects;
+		let currentPage = 1;
+		while (true) {
+			const response = await fetch(`${this.host}${this.PROJECT_URL}?ps=100&p=${currentPage}`, {
+				headers: {
+					"Authorization": `Bearer ${this.auth}`,
+					"accept": "application/json"
+				}
+			});
+
+			if (!response.ok) throw `Please double check your SonarQube URL and Token. \nThe request failed with: ${response.status}`;
+			const json: any = await response.json();
+			const { pageIndex, pageSize, total } = json['paging'];
+
+			const projectList = projectFromJson(json['components'] || []);
+			projects.push(...projectList);
+			if (pageIndex * pageSize >= total) {
+				break;
 			}
-		});
-		if (!response.ok) throw `Please double check your SonarQube URL and Token. \nThe request failed with: ${response.status}`;
-		const json: any = await response.json();
-		const projectList = projectFromJson(json['components'] || []);
-		return projectList;
+			currentPage += 1;
+		}
+		return projects;
+
 	}
 
 	async getTokenForBadges(projectKey: string) {

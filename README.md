@@ -1,5 +1,8 @@
 # sonarqube_prep
 
+SonarQube_prep is a helper application meant to make it easier to prepare projects, that are provisioned in SonarQube already, to have the needed files and information to show information.
+It will not provision a project in SonarQube for you. This should be done with more control from the UI itself.
+
 ## Running 
 
 ```bash
