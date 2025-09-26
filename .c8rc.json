@@ -9,7 +9,7 @@
 		"assets/**/*"
 	],
 	"reporter": [
-		"json",
+		"json-summary",
 		"text"
 	]
 }

@@ -13,5 +13,3 @@ jobs:
       uses: jpb06/coverage-badges-action@v1.4.2
       with:
         target-branch: main
-        coverage-summary-path: |
-            ./coverage/coverage-final.json
