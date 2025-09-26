@@ -1,5 +1,11 @@
 # sonarqube_prep
 
+![Branches](./badges/coverage-branches.svg)
+![Functions](./badges/coverage-functions.svg)
+![Lines](./badges/coverage-lines.svg)
+![Statements](./badges/coverage-statements.svg)
+![Test coverage](./badges/coverage-total.svg)
+
 SonarQube_prep is a helper application meant to make it easier to prepare projects, that are provisioned in SonarQube already, to have the needed files and information to show information.
 It will not provision a project in SonarQube for you. This should be done with more control from the UI itself.
 
