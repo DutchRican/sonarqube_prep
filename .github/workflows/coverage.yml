@@ -10,6 +10,6 @@ jobs:
     - name: Run tests with coverage
       run: npm t
     - name: Generate coverage badges
-      uses: jpb06/coverage-badges-action@v1.1
+      uses: jpb06/coverage-badges-action@v1.4.2
       with:
         target-branch: main
