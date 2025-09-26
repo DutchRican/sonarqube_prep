@@ -6,7 +6,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install dependencies
-      run: npm install
+      run: |
+        npm install
+        ls
     - name: Run tests with coverage
       run: npm t
     - name: Generate coverage badges
