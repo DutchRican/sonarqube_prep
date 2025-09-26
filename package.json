@@ -17,7 +17,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "test": "tsx --experimental-test-coverage --test '**/*.test.ts'"
+    "test": "tsx --experimental-test-coverage --test"
   },
   "bin": {
     "sq_prep": "./cli/index.js"
