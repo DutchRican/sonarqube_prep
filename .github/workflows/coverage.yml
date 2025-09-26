@@ -8,7 +8,7 @@ jobs:
     - name: Install dependencies
       run: npm install
     - name: Run tests with coverage
-      run: npm t
+      run: npm run coverage
     - name: Generate coverage badges
       uses: jpb06/coverage-badges-action@v1.4.2
       with:
