@@ -17,7 +17,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "test": "node --experimental-test-coverage --import tsx/esm --test tests/**/*.test.ts"
+    "test": "node --experimental-test-coverage --import tsx/esm --test ./tests/**/*.test.ts"
   },
   "bin": {
     "sq_prep": "./cli/index.js"
