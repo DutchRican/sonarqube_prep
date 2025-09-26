@@ -1,0 +1,15 @@
+ name: Build and Test
+    on: [push, pull_request]
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+        - name: Install dependencies
+          run: npm install
+        - name: Run tests with coverage
+          run: npm t
+        - name: Generate coverage badges
+          uses: jpb06/coverage-badges-action@v1.1
+          with:
+            target-branch: main
