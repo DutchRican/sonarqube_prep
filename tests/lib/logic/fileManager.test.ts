@@ -16,7 +16,6 @@ describe('FileManager', () => {
 		const fsWriteFileMock = mock.method(fs, 'writeFile', async () => void 0);
 		try {
 			await fileManager.createWorkflowYml('some-branch');
-			console.log(fsWriteFileMock.mock.calls[0].arguments)
 			assert(fsMock.mock.callCount() === 1);
 			assert((fsWriteFileMock.mock.calls[0].arguments[1] as String).includes('- some-branch'));
 		} catch (err: any) {
@@ -64,7 +63,6 @@ describe('FileManager', () => {
 			await fileManager.updateReadme([{ title: 'coverage', val: 'cov string val' }, { title: 'quality gate', val: 'qual string val' }], { project: 'some-project', sqUrl: 'http://sonar.url', token: 'some-token' });
 			assert(fsReadFileMock.mock.callCount() === 1);
 			assert(fsWriteFileMock.mock.callCount() === 1);
-			console.log(fsWriteFileMock.mock.calls[0].arguments);
 			assert((fsWriteFileMock.mock.calls[0].arguments[1] as String).includes('[![coverage](http://sonar.url/api/project_badges/measure?project=some-project&metric=cov string val&token=some-token)](http://sonar.url/dashboard?id=some-project)'));
 			assert((fsWriteFileMock.mock.calls[0].arguments[1] as String).includes('[![quality gate](http://sonar.url/api/project_badges/measure?project=some-project&metric=qual string val&token=some-token)](http://sonar.url/dashboard?id=some-project)'));
 			assert((fsWriteFileMock.mock.calls[0].arguments[1] as String).includes('# Some Readme'));
