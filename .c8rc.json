@@ -1,0 +1,15 @@
+{
+	"include": [
+		"lib/**/*.ts"
+	],
+	"exclude": [
+		"tests/**/*.test.ts",
+		"cli/**/*",
+		"build/**/*",
+		"assets/**/*"
+	],
+	"reporter": [
+		"json",
+		"text"
+	]
+}
